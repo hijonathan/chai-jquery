@@ -21,6 +21,17 @@
       flag = utils.flag;
   $ = $ || jQuery;
 
+  function isjQueryObject(obj) {
+    var _ref, _ref1;
+
+    if ((typeof obj !== "undefined" && obj !== null ? (_ref = obj.constructor) != null ? (_ref1 = _ref.fn) != null ? _ref1.jquery : void 0 : void 0 : void 0) != null) {
+      return true;
+
+    } else {
+      return false;
+    }
+  }
+
   var setPrototypeOf = '__proto__' in Object ?
     function (object, prototype) {
       object.__proto__ = prototype;
@@ -157,7 +168,7 @@
   chai.Assertion.overwriteProperty('exist', function (_super) {
     return function () {
       var obj = flag(this, 'object');
-      if (obj instanceof $) {
+      if (isjQueryObject(obj)) {
         this.assert(
             obj.length > 0
           , 'expected ' + inspect(obj.selector) + ' to exist'
@@ -171,7 +182,7 @@
   chai.Assertion.overwriteProperty('empty', function (_super) {
     return function () {
       var obj = flag(this, 'object');
-      if (obj instanceof $) {
+      if (isjQueryObject(obj)) {
         this.assert(
           obj.is(':empty')
           , 'expected #{this} to be empty'
@@ -186,7 +197,7 @@
     return function () {
       var be = function (selector) {
         var obj = flag(this, 'object');
-        if (obj instanceof $) {
+        if (isjQueryObject(obj)) {
           this.assert(
               obj.is(selector)
             , 'expected #{this} to be #{exp}'
@@ -205,7 +216,7 @@
   chai.Assertion.overwriteMethod('match', function (_super) {
     return function (selector) {
       var obj = flag(this, 'object');
-      if (obj instanceof $) {
+      if (isjQueryObject(obj)) {
         this.assert(
             obj.is(selector)
           , 'expected #{this} to match #{exp}'
@@ -223,7 +234,7 @@
       _super.call(this);
       var contain = function (text) {
         var obj = flag(this, 'object');
-        if (obj instanceof $) {
+        if (isjQueryObject(obj)) {
           this.assert(
               obj.is(':contains(\'' + text + '\')')
             , 'expected #{this} to contain #{exp}'
@@ -242,7 +253,7 @@
   chai.Assertion.overwriteProperty('have', function (_super) {
     return function () {
       var obj = flag(this, 'object');
-      if (obj instanceof $) {
+      if (isjQueryObject(obj)) {
         var have = function (selector) {
           this.assert(
               // Using find() rather than has() to work around a jQuery bug:
